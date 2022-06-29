@@ -1,0 +1,29 @@
+<section class="nft-bg"
+style="
+  background-image: url('../../assets/images/rsz_dv_banner.png');
+  background-position-x: -20rem;
+">
+  <div class="container">
+    <div class="row-fixed-center row">
+      <div class="col-4"></div>
+      <div class="col">
+        <div class="card w-100">
+          <div class="card-avatar text-center" style="background-color: rgb(131, 5, 5);">
+            <img class="nft-logo-size" src="../../assets/images/dv_logo.png" alt="Avatar">
+          </div>
+          <div class="card-body">
+            <p class="note-text"> (Note: You'll receive roles after clicking button, but once you sold your NFT you might lose some of your roles that you'll acquire.) </p>
+            <p class="claim-text-info"><strong>Wallet ID:</strong> X.X.XXX161</p>
+            <p class="claim-text-info mb-2"><strong>Roles To Claim:</strong></p>
+            <ul class="card-list-text mx-3 mb-4">
+              <li>OG Serpent</li><li>OG VIPer</li><li>Serpent</li><li>Cyber Serpent</li><li>Serpent Charmer</li><li>VIPer</li>
+            </ul>
+            <button *ngIf="HashConnectService.status == 'Connected'" (click)="pair()" [disabled]="HashConnectService.status != 'Connected'" class="btn btn-warning d-block mx-auto px-5 mt-3 text-white">Claim Roles</button>
+            <p *ngIf="HashConnectService.status == 'Paired'" class="paired-success h3 text-center text-success">Paired Success!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4"></div>
+    </div>
+  </div>
+</section>

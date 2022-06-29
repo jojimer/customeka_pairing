@@ -1,0 +1,61 @@
+.ngx-awesome-popup-overlay {
+  background: rgba(0,0,0,0.4) !important;
+}
+
+.standard-dialog, .danger-dialog {
+  background: var(--grey-1) !important;
+
+  * {
+      color: #fff !important;
+  }
+}
+
+div.evolve-parent-dialog {
+  box-shadow: none !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+app-pairing p {
+  color: #ccc !important;
+  margin-top: 12px;
+}
+
+app-pairing input {
+  margin-left: 2px !important;
+}
+
+app-pairing button.primary {
+  background: var(--blue-2) !important;
+  border-radius: 8px;
+}
+
+.button-section {
+  background: var(--grey-2) !important;
+  border-top: solid 2px #2e314b !important;
+  padding: 1rem !important;
+}
+
+button.ed-btn-success {
+  background: var(--blue-2) !important;
+
+  &:hover {
+      background: var(--blue-1) !important;
+  }
+}
+
+button.ed-btn-danger.ed-btn {
+  background: var(--error-dark) !important;
+
+  &:hover {
+      background: var(--error-2) !important;
+  }
+}
+
+.content-holder {
+  max-width: 100% !important;
+}
+
+tooltip {
+  z-index: 99999999999999999 !important;
+}

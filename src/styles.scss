@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+@import url(./assets/styles/_variables.scss);
+@import url(./assets/styles/modals.scss);
+@import url(./assets/styles/inputs.scss);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.nft-bg {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: top;
+}
+
+.row-fixed-center {
+  height: 100vh;
+  align-content: center;
+
+  .card-avatar {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
+  .card {
+    border-radius: 15px;
+    border: 0;
+
+    .card-body {
+      padding: 2rem 1rem;
+    }
+
+    .card-list-text {
+      line-height: 2rem;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.nft-logo-size {
+  width: 14rem;
+  height: 15rem;
+}
