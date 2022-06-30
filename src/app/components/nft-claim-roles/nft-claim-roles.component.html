@@ -8,7 +8,7 @@ style="
       <div class="col-4"></div>
       <div class="col">
         <div class="card w-100">
-          <div class="card-avatar text-center" style="background-color: rgb(131, 5, 5);">
+          <div class="card-avatar text-center" [ngStyle]="bgColor">
             <img class="nft-logo-size" src="../../assets/images/dv_logo.png" alt="Avatar">
           </div>
           <div class="card-body">
@@ -18,8 +18,11 @@ style="
             <ul class="card-list-text mx-3 mb-4">
               <li>OG Serpent</li><li>OG VIPer</li><li>Serpent</li><li>Cyber Serpent</li><li>Serpent Charmer</li><li>VIPer</li>
             </ul>
-            <button *ngIf="HashConnectService.status == 'Connected'" (click)="pair()" [disabled]="HashConnectService.status != 'Connected'" class="btn btn-warning d-block mx-auto px-5 mt-3 text-white">Claim Roles</button>
-            <p *ngIf="HashConnectService.status == 'Paired'" class="paired-success h3 text-center text-success">Paired Success!</p>
+            <div class="d-flex justify-content-center">
+              <mat-spinner color="accent" diameter="50" strokeWidth="5" *ngIf="HashConnectService.status == 'Initializing'"></mat-spinner>
+              <button *ngIf="HashConnectService.status == 'Connected'" (click)="pair()" [disabled]="HashConnectService.status != 'Connected'" class="btn btn-primary py-2 text-white px-5 text-uppercase">Claim Roles</button>
+              <p *ngIf="HashConnectService.status == 'Paired'" class="paired-success h3 text-center text-success">Paired Success!</p>
+            </div>
           </div>
         </div>
       </div>

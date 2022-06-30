@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ProjectManagerService } from 'src/app/services/project-manager.service';
 
 @Component({
   selector: 'app-nft-landing-page',
@@ -7,13 +8,12 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
   styleUrls: ['./nft-landing-page.component.scss']
 })
 export class NftLandingPageComponent implements OnInit {
-  nftProject:string|null = '';
 
-  constructor(private activatedRoute:ActivatedRoute) { }
+  constructor(private activatedRoute:ActivatedRoute, private project:ProjectManagerService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((param:ParamMap) => {
-      if(param.get('nft')) this.nftProject = param.get('nft');
+      if(param.get('nft')) this.project.getProject(param.get('nft'));
     })
   }
 
