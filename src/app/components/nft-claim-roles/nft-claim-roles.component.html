@@ -1,18 +1,16 @@
-<section class="nft-bg"
-style="
-  background-image: url('../../assets/images/rsz_dv_banner.png');
-  background-position-x: -20rem;
-">
+<section *ngIf="webAppData else noProject" class="nft-bg" [ngStyle]="background">
   <div class="container">
     <div class="row-fixed-center row">
       <div class="col-4"></div>
       <div class="col">
         <div class="card w-100">
-          <div class="card-avatar text-center" [ngStyle]="bgColor">
-            <img class="nft-logo-size" src="../../assets/images/dv_logo.png" alt="Avatar">
+          <div class="card-avatar text-center" [ngStyle]="{backgroundColor: webAppData.bgColor}">
+            <img class="nft-logo-size" src="{{webAppData.logo}}" alt="Avatar">
           </div>
           <div class="card-body">
-            <p class="note-text"> (Note: You'll receive roles after clicking button, but once you sold your NFT you might lose some of your roles that you'll acquire.) </p>
+            <p class="note-text">
+              {{webAppData.note}}
+            </p>
             <p class="claim-text-info"><strong>Wallet ID:</strong> X.X.XXX161</p>
             <p class="claim-text-info mb-2"><strong>Roles To Claim:</strong></p>
             <ul class="card-list-text mx-3 mb-4">
@@ -20,7 +18,7 @@ style="
             </ul>
             <div class="d-flex justify-content-center">
               <mat-spinner color="accent" diameter="50" strokeWidth="5" *ngIf="HashConnectService.status == 'Initializing'"></mat-spinner>
-              <button *ngIf="HashConnectService.status == 'Connected'" (click)="pair()" [disabled]="HashConnectService.status != 'Connected'" class="btn btn-primary py-2 text-white px-5 text-uppercase">Claim Roles</button>
+              <button *ngIf="HashConnectService.status == 'Connected'" (click)="pair()" [disabled]="HashConnectService.status != 'Connected'" class="btn btn-warning py-2 text-white px-5 text-uppercase">Claim Roles</button>
               <p *ngIf="HashConnectService.status == 'Paired'" class="paired-success h3 text-center text-success">Paired Success!</p>
             </div>
           </div>
@@ -30,3 +28,9 @@ style="
     </div>
   </div>
 </section>
+
+<ng-template #noProject>
+  <div class="initial-loader">
+    <mat-spinner color="warn" diameter="65" strokeWidth="5"></mat-spinner>
+  </div>
+</ng-template>

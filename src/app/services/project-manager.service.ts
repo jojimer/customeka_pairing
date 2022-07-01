@@ -1,14 +1,37 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreDocument, DocumentData } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+const projects = require('../../assets/nft_projects.json');
+
+// interface DocumentSnapshot {
+//   exists: boolean;
+//   ref: DocumentReference;
+//   id: string;
+//   metadata: SnapshotMetadata;
+//   data(): DocumentData;
+//   get(fieldPath: string): any;
+// }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectManagerService {
+  private itemDoc: AngularFirestoreDocument<DocumentData>;
+  items:Observable<DocumentData>;
 
-  constructor() { }
+  constructor(public afs:AngularFirestore) { }
 
   getProject(nftProject:string|null){
-    console.log(nftProject);
+    const project = Object.keys(projects).map(p => {
+      if(p == nftProject) return projects[p].directory;
+    });
+
+    if(project[0] === undefined && nftProject !== null) return; // project don't exist
+
+    this.itemDoc = this.afs.doc<DocumentData>('NFT_PROJECTS/'+project);
+    this.items = this.itemDoc.snapshotChanges().pipe(actions => actions);
+
+    return this.items;
   }
 
   getVerify(vCode:string|null){

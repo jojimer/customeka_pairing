@@ -8,8 +8,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 
 const routes: Routes = [
   {path : '' , component: ComingSoonComponent },
-  {path : ':nft' , component: NftLandingPageComponent},
-  {path: ':nft/:vcode', component: NftClaimRolesComponent},
+  {path : 'p/:nft' , component: NftLandingPageComponent},
+  {path: 'p/:nft/:vcode', component: NftClaimRolesComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 
