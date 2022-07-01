@@ -4,7 +4,6 @@ import { ButtonLayoutDisplay, ButtonMaker, DialogInitializer, DialogLayoutDispla
 import { PairingComponent } from '../pairing/pairing.component';
 import { ProjectManagerService } from 'src/app/services/project-manager.service';
 import { Project } from '../../models/Project';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Roles } from 'src/app/models/Roles';
 
 import { HashconnectService } from '../../services/hashconnect.service';
@@ -20,16 +19,14 @@ export class NftClaimRolesComponent implements OnInit {
   claiming:Roles
   roleText:string = "Role";
   background = {}
+  projectInit:boolean = false;
 
   constructor(
     private activatedRoute:ActivatedRoute,
     public HashConnectService: HashconnectService,
     private project: ProjectManagerService,
-    private router: Router,
-    private _snackBar:MatSnackBar
-  ) {}
-
-  ngOnInit(): void {
+    private router: Router
+  ) {
     this.activatedRoute.paramMap.subscribe((param:ParamMap) => {
       const project_id = param.get('nft');
       if(project_id){
@@ -49,23 +46,31 @@ export class NftClaimRolesComponent implements OnInit {
             verification?.forEach(v => {
               // Check if verification key exist
               if(!v.payload.exists){
-                this.openSnackBar('Link is invalid! try again.');
-                this.router.navigate(['/p/'+project_id]);
-              }
-
-              // Check if verification key expired
-              if(this.project.checkExpiration(v.payload.get('time')).expired){
-                this.openSnackBar('Verification Key Expired! try again.');
+                this.project.openSnackBar('Link is invalid! try again.',5);
                 this.router.navigate(['/p/'+project_id]);
               }
 
               this.claiming = v.payload.data();
+
+              // Check if verification key expired
+              if(this.project.checkExpiration(this.claiming.time).expired){
+                this.project.openSnackBar('Verification Key Expired! try again.',5);
+                this.router.navigate(['/p/'+project_id]);
+              }
+
+              // Check if roles already claimed
+              if(this.claiming.complete && !this.projectInit){
+                this.project.openSnackBar('Roles already claimed for this verification key.',5);
+                this.router.navigate(['/p/'+project_id]);
+              }
+
+              this.project.setItems(v.payload.data());
               this.claiming.wallet_id = this.project.hideWalletDigits(this.claiming.wallet_id);
               if(this.claiming.roles.length > 1) this.roleText += "s";
 
-
               // Proceed to Hashconnect Services
               this.HashConnectService.initHashconnect();
+              this.projectInit = true;
             })
           })
         }else{
@@ -75,6 +80,8 @@ export class NftClaimRolesComponent implements OnInit {
       }
     })
   }
+
+  ngOnInit(): void {}
 
   pair() {
       const dialogPopup = new DialogInitializer(PairingComponent);
@@ -89,14 +96,6 @@ export class NftClaimRolesComponent implements OnInit {
       ]);
 
       dialogPopup.openDialog$().subscribe(resp => { });
-  }
-
-  openSnackBar(msg:string) {
-    this._snackBar.open(msg,'Dismiss',{
-      duration: 5 * 1000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top'
-    });
   }
 
 }

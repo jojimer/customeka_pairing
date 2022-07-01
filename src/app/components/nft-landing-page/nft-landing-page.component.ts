@@ -17,9 +17,7 @@ export class NftLandingPageComponent implements OnInit {
     private activatedRoute:ActivatedRoute,
     private project:ProjectManagerService,
     private router:Router
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this.activatedRoute.paramMap.subscribe((param:ParamMap) => {
       if(param.get('nft')){
         let docs = this.project.getProject(param.get('nft'));
@@ -35,6 +33,8 @@ export class NftLandingPageComponent implements OnInit {
 
       }
     })
-  }
+   }
+
+  ngOnInit(): void {}
 
 }

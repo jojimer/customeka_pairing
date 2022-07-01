@@ -51,7 +51,7 @@ export class HashconnectService {
 
             //then connect, storing the new topic in localstorage
             const state = await this.hashconnect.connect();
-            console.log("Received state", state);
+            //console.log("Received state", state);
             this.saveData.topic = state.topic;
 
             //generate a pairing string, which you can display and generate a QR code from
@@ -89,24 +89,24 @@ export class HashconnectService {
         //     })
         // })
 
-        this.hashconnect.pairingEvent.on((data) => {
-            console.log("Paired with wallet", data);
-            this.status = "Paired";
+        // this.hashconnect.pairingEvent.on((data) => {
+        //     //console.log("Paired with wallet", data);
+        //     this.status = "Paired";
 
-            this.saveData.pairedWalletData = data.metadata;
+        //     this.saveData.pairedWalletData = data.metadata;
 
-            data.accountIds.forEach(id => {
-                if(this.saveData.pairedAccounts.indexOf(id) == -1)
-                    this.saveData.pairedAccounts.push(id);
-            })
+        //     data.accountIds.forEach(id => {
+        //         if(this.saveData.pairedAccounts.indexOf(id) == -1)
+        //             this.saveData.pairedAccounts.push(id);
+        //     })
 
-            this.saveDataInLocalstorage();
-        });
+        //     this.saveDataInLocalstorage();
+        // });
 
 
         this.hashconnect.transactionEvent.on((data) => {
             //this will not be common to be used in a dapp
-            console.log("transaction event callback");
+            //console.log("transaction event callback");
         });
     }
 

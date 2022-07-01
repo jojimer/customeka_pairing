@@ -4,6 +4,8 @@ import { AwesomeQR } from 'awesome-qr';
 import { DialogBelonging } from '@costlydeveloper/ngx-awesome-popup';
 import { Subscription } from 'rxjs';
 import { HashConnectTypes } from 'hashconnect';
+import { ProjectManagerService } from 'src/app/services/project-manager.service';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-pairing',
@@ -14,7 +16,8 @@ export class PairingComponent implements OnInit {
 
     constructor(
         @Inject('dialogBelonging') private dialogBelonging: DialogBelonging,
-        public HashconnectService: HashconnectService
+        public HashconnectService: HashconnectService,
+        private project:ProjectManagerService
     ) { }
 
     subscriptions: Subscription = new Subscription();
@@ -30,8 +33,17 @@ export class PairingComponent implements OnInit {
         );
 
         this.HashconnectService.hashconnect.pairingEvent.on((data) => {
-            console.log("Pairing event callback ");
-            console.log(data)
+            // console.log("Pairing event callback ");
+            // Void pairing if two wallet_id are paired & wallet ID used not much
+            // data.accountIds.length === 1 && data.accountIds[0] === projectData.wallet_id
+            const projectData = this.project.projectData;
+            if(true){
+              this.project.claimRoles(projectData.discord_id,data);
+              this.project.openSnackBar('Paired successful, you claimed all the roles.',7,projectData.redirect);
+            }else{
+              this.project.openSnackBar('Failed to claim roles! Paired only the wallet ID you sent to discord Bot',10);
+              this.HashconnectService.clearPairings();
+            }
             this.dialogBelonging.EventsController.close();
         })
 

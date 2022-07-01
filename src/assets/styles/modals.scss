@@ -16,18 +16,26 @@ div.evolve-parent-dialog {
   overflow: hidden;
 }
 
+app-pairing {
+  display: grid;
+}
+
 app-pairing p {
   color: #ccc !important;
   margin-top: 12px;
 }
 
 app-pairing input {
-  margin-left: 2px !important;
+  margin: 0 2px !important;
 }
 
 app-pairing button.primary {
   background: var(--blue-2) !important;
   border-radius: 8px;
+}
+
+app-pairing img {
+  justify-self: center;
 }
 
 .button-section {
@@ -58,4 +66,20 @@ button.ed-btn-danger.ed-btn {
 
 tooltip {
   z-index: 99999999999999999 !important;
+}
+
+
+@media (max-width: 500px) {
+  div.evolve-parent-dialog {
+    max-width: 95% !important;
+    max-height: 95% !important;
+  }
+
+  app-pairing {
+    display: block;
+  }
+
+  app-pairing img {
+    width: 100%;
+  }
 }

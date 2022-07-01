@@ -1,8 +1,8 @@
-import { Time } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentData } from '@angular/fire/compat/firestore';
-import { timeStamp } from 'console';
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Roles } from '../models/Roles';
 const projects = require('../../assets/nft_projects.json');
 
 @Injectable({
@@ -10,9 +10,15 @@ const projects = require('../../assets/nft_projects.json');
 })
 export class ProjectManagerService {
   private itemDoc: AngularFirestoreDocument<DocumentData>;
+  private memberDoc: AngularFirestoreDocument<DocumentData>;
   items:Observable<DocumentData>;
+  projectData:Roles
+  documentID:string
 
-  constructor(public afs:AngularFirestore) { }
+  constructor(
+    public afs:AngularFirestore,
+    private _snackBar:MatSnackBar
+  ) { }
 
   private searchProject(nftProject:string|null){
     return Object.keys(projects).map(p => {
@@ -25,16 +31,27 @@ export class ProjectManagerService {
     if(document_id[0] === undefined && nftProject !== null) return; // project don't exist
 
     this.itemDoc = this.afs.doc<DocumentData>('NFT_PROJECTS/'+document_id);
-    this.items = this.itemDoc.snapshotChanges().pipe(actions => actions);
+    this.items = this.itemDoc.snapshotChanges();
 
     return this.items;
   }
 
   getVerify(vCode:string|null,document_id:string){
     this.itemDoc = this.afs.doc<DocumentData>('NFT_PROJECTS/'+document_id+'/verification_key/'+vCode);
-    this.items = this.itemDoc.snapshotChanges().pipe(actions => actions);
+    this.items = this.itemDoc.snapshotChanges();
+    this.documentID = document_id
 
     return this.items;
+  }
+
+  claimRoles(discord_id:string,pairingData:object){
+    this.itemDoc.update({complete:true});
+    this.memberDoc = this.afs.doc<DocumentData>('NFT_PROJECTS/'+this.documentID+'/members/'+discord_id);
+    return this.memberDoc.update({verified: "claiming", pairing_data: pairingData});
+  }
+
+  setItems(data:Roles){
+    this.projectData = data;
   }
 
   hideWalletDigits(wallet_id:string){
@@ -53,5 +70,17 @@ export class ProjectManagerService {
     let seconds = timeLeft % 60;
     let expired = minutes < 0 && seconds < 30 ? true : false;
     return { min: minutes, sec: seconds, expired: expired };
+  }
+
+  openSnackBar(msg:string,ms:number,url:string|null = null) {
+    let snackBarRef = this._snackBar.open(msg,'Dismiss',{
+      duration: ms * 1000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    });
+
+    if(url !== null) snackBarRef.afterDismissed().subscribe(() => {
+      window.location.replace(url);
+    });
   }
 }

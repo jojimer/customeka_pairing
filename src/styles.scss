@@ -10,10 +10,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-size: cover;
   background-position-y: top;
+  padding: 1.5rem 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 .row-fixed-center {
-  height: 100vh;
+  height: 95vh;
   align-content: center;
 
   .card-avatar {
@@ -76,4 +80,20 @@ button.btn {
   left: 50vw;
   top: 50vh;
   transform: translate(-50%,-50%);
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .row-fixed-center {
+    height: unset;
+    align-content: unset;
+
+    .col-4 {
+      display: none;
+    }
+  }
 }
