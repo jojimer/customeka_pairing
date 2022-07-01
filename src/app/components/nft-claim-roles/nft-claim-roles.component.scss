@@ -9,3 +9,11 @@
 .claim-text-info {
   margin: 1rem 1rem 0;
 }
+
+#spinner_wrap {
+  min-height: 30vh;
+
+  mat-spinner {
+    margin: auto;
+  }
+}

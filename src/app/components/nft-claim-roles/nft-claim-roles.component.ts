@@ -4,9 +4,10 @@ import { ButtonLayoutDisplay, ButtonMaker, DialogInitializer, DialogLayoutDispla
 import { PairingComponent } from '../pairing/pairing.component';
 import { ProjectManagerService } from 'src/app/services/project-manager.service';
 import { Project } from '../../models/Project';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Roles } from 'src/app/models/Roles';
 
 import { HashconnectService } from '../../services/hashconnect.service';
-import { SigningService } from '../../services/signing.service';
 
 @Component({
   selector: 'app-nft-claim-roles',
@@ -16,14 +17,16 @@ import { SigningService } from '../../services/signing.service';
 
 export class NftClaimRolesComponent implements OnInit {
   webAppData:Project
+  claiming:Roles
+  roleText:string = "Role";
   background = {}
 
   constructor(
     private activatedRoute:ActivatedRoute,
     public HashConnectService: HashconnectService,
-    private SigningService: SigningService,
     private project: ProjectManagerService,
-    private router: Router
+    private router: Router,
+    private _snackBar:MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -35,20 +38,38 @@ export class NftClaimRolesComponent implements OnInit {
         if(docs !== undefined) {
 
           docs?.forEach(doc => {
-            this.webAppData = doc.payload.data().webAppData;
+            if(!doc.payload.exists) this.router.navigate(['/invalid-link']);
+            this.webAppData = doc.payload.get('webAppData');
             this.background = {
               backgroundImage: `url("${this.webAppData.banner}")`,
               backgroundPosition: this.webAppData.bannerPosition
             }
-            console.log(this.webAppData)
+
+            let verification = this.project.getVerify(param.get('vcode'),doc.payload.id);
+            verification?.forEach(v => {
+              // Check if verification key exist
+              if(!v.payload.exists){
+                this.openSnackBar('Link is invalid! try again.');
+                this.router.navigate(['/p/'+project_id]);
+              }
+
+              // Check if verification key expired
+              if(this.project.checkExpiration(v.payload.get('time')).expired){
+                this.openSnackBar('Verification Key Expired! try again.');
+                this.router.navigate(['/p/'+project_id]);
+              }
+
+              this.claiming = v.payload.data();
+              this.claiming.wallet_id = this.project.hideWalletDigits(this.claiming.wallet_id);
+              if(this.claiming.roles.length > 1) this.roleText += "s";
+
+
+              // Proceed to Hashconnect Services
+              this.HashConnectService.initHashconnect();
+            })
           })
-
-          this.project.getVerify(param.get('vcode'));
-          this.SigningService.init();
-          this.HashConnectService.initHashconnect();
-
         }else{
-          this.router.navigate(['/invalid-url']);
+          this.router.navigate(['/invalid-link']);
         }
 
       }
@@ -68,6 +89,14 @@ export class NftClaimRolesComponent implements OnInit {
       ]);
 
       dialogPopup.openDialog$().subscribe(resp => { });
+  }
+
+  openSnackBar(msg:string) {
+    this._snackBar.open(msg,'Dismiss',{
+      duration: 5 * 1000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    });
   }
 
 }

@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 // Material Component
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Firestore
 import { AngularFireModule } from '@angular/fire/compat';
@@ -18,8 +19,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environment';
 
 // Custom Services
-import { ListService } from "./services/list.service";
 import { ProjectManagerService } from './services/project-manager.service';
+import { RolesService } from './services/roles.service';
 
 // Custom Components
 import { ComingSoonComponent } from './components/coming-soon/coming-soon.component';
@@ -28,7 +29,6 @@ import { NftClaimRolesComponent } from './components/nft-claim-roles/nft-claim-r
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ResultModalComponent } from './components/result-modal/result-modal.component';
 import { PairingComponent } from './components/pairing/pairing.component';
-import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +39,6 @@ import { ListComponent } from './components/list/list.component';
     PageNotFoundComponent,
     ResultModalComponent,
     PairingComponent,
-    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -49,12 +48,13 @@ import { ListComponent } from './components/list/list.component';
     NgxAwesomePopupModule.forRoot(),
     DialogConfigModule.forRoot(),
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
   ],
   providers: [
-    ListService,
-    ProjectManagerService
+    RolesService,
+    ProjectManagerService,
   ],
   bootstrap: [AppComponent]
 })
