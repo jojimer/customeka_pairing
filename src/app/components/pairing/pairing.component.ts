@@ -35,9 +35,8 @@ export class PairingComponent implements OnInit {
         this.HashconnectService.hashconnect.pairingEvent.on((data) => {
             // console.log("Pairing event callback ");
             // Void pairing if two wallet_id are paired & wallet ID used not much
-            // data.accountIds.length === 1 && data.accountIds[0] === projectData.wallet_id
             const projectData = this.project.projectData;
-            if(true){
+            if(data.accountIds.length === 1 && data.accountIds[0] === projectData.wallet_id){
               this.project.claimRoles(projectData.discord_id,data);
               this.project.openSnackBar('Paired successful, you claimed all the roles.',7,projectData.redirect);
             }else{
