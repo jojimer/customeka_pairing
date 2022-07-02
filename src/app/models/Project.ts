@@ -7,5 +7,6 @@ export interface Project {
   lp_btn_text:string,
   pairing_btn_text:string,
   note:string,
-  project_title:string
+  project_title:string,
+  discord_link:string
 }

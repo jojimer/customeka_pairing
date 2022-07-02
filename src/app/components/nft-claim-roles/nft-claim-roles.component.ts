@@ -54,13 +54,13 @@ export class NftClaimRolesComponent implements OnInit {
 
               // Check if verification key expired
               if(this.project.checkExpiration(this.claiming.time).expired){
-                this.project.openSnackBar('Verification Key Expired! try again.',5);
+                this.project.openSnackBar('Verification Key Expired! try again.',12);
                 this.router.navigate(['/p/'+project_id]);
               }
 
               // Check if roles already claimed
               if(this.claiming.complete && !this.projectInit){
-                this.project.openSnackBar('Roles already claimed for this verification key.',5);
+                this.project.openSnackBar('Roles already claimed for this verification key.',12);
                 this.router.navigate(['/p/'+project_id]);
               }
 
