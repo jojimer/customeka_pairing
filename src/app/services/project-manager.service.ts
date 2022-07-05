@@ -21,13 +21,11 @@ export class ProjectManagerService {
   ) { }
 
   private searchProject(nftProject:string|null){
-    return Object.keys(projects).map(p => {
-      if(p == nftProject) return projects[p].directory;
-    });
+    return Object.keys(projects).filter(p => p === nftProject);
   }
 
   getProject(nftProject:string|null){
-    const document_id = this.searchProject(nftProject);
+    const document_id = projects[this.searchProject(nftProject)[0]].directory;
     if(document_id[0] === undefined && nftProject !== null) return; // project don't exist
 
     this.itemDoc = this.afs.doc<DocumentData>('NFT_PROJECTS/'+document_id);
