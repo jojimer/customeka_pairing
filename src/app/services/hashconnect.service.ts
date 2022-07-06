@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ButtonLayoutDisplay, ButtonMaker, DialogInitializer, DialogLayoutDisplay } from '@costlydeveloper/ngx-awesome-popup';
 import { Transaction, TransactionReceipt } from '@hashgraph/sdk';
+import { environment } from '../../environments/environment';
 import { HashConnect, HashConnectTypes, MessageTypes } from 'hashconnect';
 import { ResultModalComponent } from '../components/result-modal/result-modal.component';
 import { SigningService } from './signing.service';
@@ -55,7 +56,7 @@ export class HashconnectService {
             this.saveData.topic = state.topic;
 
             //generate a pairing string, which you can display and generate a QR code from
-            this.saveData.pairingString = this.hashconnect.generatePairingString(state, "testnet", true);
+            this.saveData.pairingString = this.hashconnect.generatePairingString(state, environment.network, true);
 
             //find any supported local wallets
             this.hashconnect.findLocalWallets();
