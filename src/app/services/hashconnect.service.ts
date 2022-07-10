@@ -18,6 +18,7 @@ export class HashconnectService {
 
     hashconnect: HashConnect;
     status: string = "Initializing";
+    appMetadata: HashConnectTypes.AppMetadata
 
     availableExtensions: HashConnectTypes.WalletMetadata[] = []
 
@@ -34,11 +35,8 @@ export class HashconnectService {
         pairedWalletData: undefined,
         pairedAccounts: []
     }
-
-    appMetadata: HashConnectTypes.AppMetadata = {
-        name: "Serpent Project",
-        description: "Connect with Serpent Project",
-        icon: "https://connect.customeka.xyz/images/serp_logo1.png"
+    setAppMetaData(data:HashConnectTypes.AppMetadata){
+        this.appMetadata  = data;
     }
 
     async initHashconnect() {

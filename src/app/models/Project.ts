@@ -8,5 +8,6 @@ export interface Project {
   pairing_btn_text:string,
   note:string,
   project_title:string,
-  discord_link:string
+  discord_link:string,
+  description:string
 }

@@ -5,6 +5,7 @@ import { PairingComponent } from '../pairing/pairing.component';
 import { ProjectManagerService } from 'src/app/services/project-manager.service';
 import { Project } from '../../models/Project';
 import { Roles } from 'src/app/models/Roles';
+import { HashConnectTypes } from 'hashconnect';
 
 import { HashconnectService } from '../../services/hashconnect.service';
 
@@ -69,6 +70,11 @@ export class NftClaimRolesComponent implements OnInit {
               if(this.claiming.roles.length > 1) this.roleText += "s";
 
               // Proceed to Hashconnect Services
+              this.HashConnectService.setAppMetaData({
+                name: this.webAppData.project_title,
+                icon: this.webAppData.logo,
+                description: this.webAppData.description
+              });
               this.HashConnectService.initHashconnect();
               this.projectInit = true;
             })
